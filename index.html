@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>صفحة بيع منتج</title>
+  <style>
+    body {font-family: Arial, sans-serif; background:#f5f5f5; margin:0; padding:0}
+    .container {max-width:600px; margin:40px auto; background:#fff; padding:20px; border-radius:8px}
+    img {max-width:100%; border-radius:8px}
+    h1 {margin-top:0}
+    label {display:block; margin-top:12px}
+    input, select, button {width:100%; padding:10px; margin-top:6px}
+    button {background:#28a745; color:#fff; border:none; cursor:pointer}
+    button:hover {background:#218838}
+    .success {display:none; margin-top:20px; padding:15px; background:#d4edda; color:#155724; border-radius:6px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>اسم المنتج</h1>
+    <img src="product.jpg" alt="صورة المنتج">
+    <p><strong>السعر:</strong> 5000 دج</p>
+    <p>وصف مختصر للمنتج يوضع هنا.</p>
+
+    <form id="orderForm">
+      <label>الاسم الكامل</label>
+      <input type="text" name="name" required>
+
+      <label>الولاية</label>
+      <select id="wilaya" required></select>
+
+      <label>البلدية</label>
+      <select id="baladia" required></select>
+
+      <label>رقم الهاتف</label>
+      <input type="tel" name="phone" pattern="[0-9]{10}" placeholder="0XXXXXXXXX" required>
+
+      <button type="submit">تأكيد الطلب</button>
+    </form>
+
+    <div class="success" id="successMsg">
+      شكراً على تعاملكم معنا، انتظروا الاتصال بكم للتأكيد.
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){ emailjs.init('YOUR_PUBLIC_KEY'); })();
+
+    const data = {
+      "الجزائر": ["الجزائر الوسطى","باب الواد"],
+      "وهران": ["وهران","السانية"]
+    };
+
+    const wilayaSelect = document.getElementById('wilaya');
+    const baladiaSelect = document.getElementById('baladia');
+
+    wilayaSelect.innerHTML = '<option value="">اختر الولاية</option>';
+    Object.keys(data).forEach(w => {
+      wilayaSelect.innerHTML += `<option value="${w}">${w}</option>`;
+    });
+
+    wilayaSelect.addEventListener('change', () => {
+      baladiaSelect.innerHTML = '';
+      data[wilayaSelect.value].forEach(b => {
+        baladiaSelect.innerHTML += `<option value="${b}">${b}</option>`;
+      });
+    });
+
+    document.getElementById('orderForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      emailjs.send('YOUR_SERVICE_ID','YOUR_TEMPLATE_ID',{
+        name: this.name.value,
+        phone: this.phone.value,
+        wilaya: wilayaSelect.value,
+        baladia: baladiaSelect.value
+      }).then(() => {
+        document.getElementById('successMsg').style.display='block';
+        this.reset();
+      });
+    });
+  </script>
+</body>
+</html>
