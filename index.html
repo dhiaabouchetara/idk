@@ -67,6 +67,34 @@
       });
     });
 
+<form action="https://formsubmit.co/dhiaaddhiaa@gmail.com" method="POST">
+
+  <input type="hidden" name="_subject" value="طلب جديد من الموقع">
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_next" value="thanks.html">
+
+  <label>الاسم الكامل</label>
+  <input type="text" name="الاسم الكامل" required>
+
+  <label>رقم الهاتف</label>
+  <input type="tel" name="رقم الهاتف" required>
+
+  <label>الولاية</label>
+  <select name="الولاية" required>
+    <option value="">اختر ولايتك</option>
+    <option>الجزائر</option>
+    <option>وهران</option>
+    <option>قسنطينة</option>
+  </select>
+
+  <label>البلدية</label>
+  <input type="text" name="البلدية" required>
+
+  <button type="submit">تأكيد الطلب</button>
+
+</form>
+
+    
     document.getElementById('orderForm').addEventListener('submit', function(e){
       e.preventDefault();
       emailjs.send('YOUR_SERVICE_ID','YOUR_TEMPLATE_ID',{
